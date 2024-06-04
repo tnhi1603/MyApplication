@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.SQLiteConnector.SQLiteConnector;
 import com.example.myapplication.model.User;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Register extends AppCompatActivity {
 
     EditText editTextUsername, editTextEmail, editTextPassword;
@@ -37,7 +40,8 @@ public class Register extends AppCompatActivity {
                 if (username.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    User user = new User(username, email, password);
+                    String hashedPassword = hashPassword(password);
+                    User user = new User(username, email, hashedPassword);
                     db.addUser(user);
                     Toast.makeText(Register.this, "Registration Successful", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Register.this, Login.class);
@@ -45,5 +49,26 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void login(View view) {
+        Intent intent = new Intent(Register.this, Login.class);
+        startActivity(intent);
+    }
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

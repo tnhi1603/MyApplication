@@ -2,6 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     android:padding="16dp">
 
     <EditText
@@ -28,4 +29,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Register" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="380dp"
+        android:layout_height="47dp"
+        android:autoText="false"
+        android:onClick="login"
+        android:text="Log in"
+        android:gravity="end"
+        android:textSize="20sp"
+        android:paddingTop="16dp"
+        android:paddingRight="16dp"
+    />
+
 </LinearLayout>
